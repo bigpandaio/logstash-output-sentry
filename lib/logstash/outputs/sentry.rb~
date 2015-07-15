@@ -1,8 +1,7 @@
 # encoding: utf-8
 require 'logstash/outputs/base'
 require 'logstash/namespace'
-require 'json'
-
+ 
 class LogStash::Outputs::Sentry < LogStash::Outputs::Base
  
   config_name 'sentry'
@@ -11,16 +10,13 @@ class LogStash::Outputs::Sentry < LogStash::Outputs::Base
   config :key, :validate => :string, :required => true
   config :secret, :validate => :string, :required => true
   config :project_id, :validate => :string, :required => true
-  config :host, :validate => :string, :default => "https://app.getsentry.com", :required => false 
-  config :msg, :validate => :string, :default => "Message parsed with logstash", :required => false
-  config :level_tag, :validate => :string, :default => "fatal", :required => false
-
+ 
   public
   def register
     require 'net/https'
     require 'uri'
     
-    @url = "#{host}/api/#{project_id}/store/"
+    @url = "https://app.getsentry.com/api/#{project_id}/store/"
     @uri = URI.parse(@url)
     @client = Net::HTTP.new(@uri.host, @uri.port)
     @client.use_ssl = true
@@ -38,15 +34,14 @@ class LogStash::Outputs::Sentry < LogStash::Outputs::Base
     packet = {
       :event_id => SecureRandom.uuid.gsub('-', ''),
       :timestamp => event['@timestamp'],
-      #:message => event['message'] 
-      :message => "#{msg}"
-   }
+      :message => event['message']
+    }
  
-    packet[:level] = "#{level_tag}"
+    packet[:level] = event['[fields][level]']
  
     packet[:platform] = 'logstash'
     packet[:server_name] = event['host']
-    packet[:tags] = event.to_hash
+    packet[:extra] = event['fields'].to_hash
  
     @logger.debug("Sentry packet", :sentry_packet => packet)
  
