@@ -5,6 +5,7 @@ This is a plugin for [Logstash](https://github.com/elasticsearch/logstash).
 This plugin gives you the possibility to send your output parsed with Logstash to a Sentry host.
 
 This plugin is fully free and fully open source. The license is Apache 2.0, meaning you are pretty much free to use it however you want in whatever way.
+
 But keep in mind that this is not an official plugin, and this plugin is not supported by the Logstash community. 
 
 
@@ -12,30 +13,27 @@ But keep in mind that this is not an official plugin, and this plugin is not sup
 
 ### Installation 
 
-Note you must have installed [Logstash](https://github.com/elasticsearch/logstash) if you want to use this plugin...
+You must have the [Logstash](https://github.com/elasticsearch/logstash) folder installed on your computer if you want to use this plugin.
 
 As this plugin will be no longer supported by me in the future, you can install the plugin this way :  
 
-1. [Download](https://github.com/antho31/logstash-output-sentry/archive/master.zip) and extract or [clone](https://github.com/antho31/logstash-output-sentry.git) the project. 
+* [Download](https://github.com/antho31/logstash-output-sentry/archive/master.zip) and extract or [clone](https://github.com/antho31/logstash-output-sentry.git) the project. 
 
-2. Open the Gemfile in your logstash-X.X.X folder with your favorite editor. 
+* Open the Gemfile in your logstash-X.X.X folder with your favorite editor. 
 
-3. Add this line at the end of the Gemfile (don't forget to replace "[the_absolute_path_where_you_put_the_project]" with the correct path)
+* Add this line at the end of the Gemfile (don't forget to replace "[the_absolute_path_where_you_put_the_project]" with the correct path) : 
 
 ```ruby
 gem "logstash-output-sentry", :path => "[the_absolute_path_where_you_put_the_project]/logstash-output-sentry"
 ```
 
-4. Install the plugin with this command (don't forget to replace "[the_absolute_path_where_you_put_the_project]" with the correct path.)
+* Install the plugin with this command (don't forget to replace "[the_absolute_path_where_you_put_the_project]" with the correct path.) :
 ```sh
 cd [logstash_path_folder]
 bin/plugin install --no-verify
 ```
 
-5. You can now run this output plugin (see how below)
-
-6. Modify the file ```logstash-output-sentry/lib/logstash/output/sentry.rb``` if you feel the need. You can run Logstash and use the plugin directly (a message will inform you if you have errors in your ruby file)
-
+* You can now run this output plugin (see how below). Feel free to modify the file ```logstash-output-sentry/lib/logstash/output/sentry.rb``` if you need. 
 
 ### Usage 
 
@@ -43,12 +41,12 @@ bin/plugin install --no-verify
 It’s important to note that Sentry should not be thought of as a log stream, but as an aggregator. 
 It fits somewhere in-between a simple metrics solution (such as Graphite) and a full-on log stream aggregator (like Logstash).
 
-1. In Sentry, generate and get your client key (Settings -> Client key). The client key has this form : 
+* In Sentry, generate and get your client key (Settings -> Client key). The client key has this form : 
 ```
 https://[key]:[secret]@[host]/[project_id]
 ```
 
-2. In your Logstash configuration file, inform your client key : 
+* In your Logstash configuration file, inform your client key : 
 ```ruby
 output {
   sentry {
@@ -59,7 +57,7 @@ output {
  }
 ```
 
-3. Note that all your fields (incluing the Logstash field "message") will be in the "extra" field in Sentry. But be careful : by default , the host is set to "app.getsentry.com" ; if you have installed Sentry in your own machine, please change the host. (change "http://localhost:9000" with the correct value according your configuration a).   
+* Note that all your fields (incluing the Logstash field "message") will be in the "extra" field in Sentry. But be careful : by default , the host is set to "app.getsentry.com". If you have installed Sentry on your own machine, please change the host (change "http://localhost:9000" with the correct value according your configuration) :   
 ```ruby
 output {
   sentry {
@@ -72,7 +70,7 @@ output {
  }
 ```
 
-4.  You can change the "message" field  (default : "Message from logstash"), indicate the level (default : "error"), and decide if all your Logstash fields will be tagged in Sentry. If you use the protocole HTTPS, please enable "use_ssl" (default : true), but if you use http you MUST disable ssl. 
+* You can change the "message" field  (default : "Message from logstash"), indicate the level (default : "error"), and decide if all your Logstash fields will be tagged in Sentry. If you use the protocole HTTPS, please enable "use_ssl" (default : true), but if you use http you MUST disable ssl. 
 ```ruby
 sentry {
    'key' => "87e60914d35a4394a69acc3b6d15d061"
