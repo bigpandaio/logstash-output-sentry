@@ -21,13 +21,13 @@ As this plugin will be no longer supported by me in the future, you can install 
 
 * Open the Gemfile in your logstash-X.X.X folder with your favorite editor. 
 
-* Add this line at the end of the Gemfile (don't forget to replace "[the_absolute_path_where_you_put_the_project]" with the correct path) : 
+* Add this line at the end of the Gemfile (don't forget to replace "[the_absolute_..._project]" with the correct path) : 
 
 ```ruby
 gem "logstash-output-sentry", :path => "[the_absolute_path_where_you_put_the_project]/logstash-output-sentry"
 ```
 
-* Install the plugin with this command (don't forget to replace "[the_absolute_path_where_you_put_the_project]" with the correct path.) :
+* Install the plugin with this command (don't forget to replace "[logstash_path_folder]" with the correct path.) :
 ```sh
 cd [logstash_path_folder]
 bin/plugin install --no-verify
@@ -43,7 +43,7 @@ It fits somewhere in-between a simple metrics solution (such as Graphite) and a 
 
 * In Sentry, generate and get your client key (Settings -> Client key). The client key has this form : 
 ```
-https://[key]:[secret]@[host]/[project_id]
+[http|https]://[key]:[secret]@[host]/[project_id]
 ```
 
 * In your Logstash configuration file, inform your client key : 
