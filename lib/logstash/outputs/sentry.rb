@@ -43,6 +43,9 @@ class LogStash::Outputs::Sentry < LogStash::Outputs::Base
   # If you have installed Sentry in your own machine, maybe you do use http, 
   # so you have to disable ssl ( "use_ssl" => false ) 
   config :use_ssl, :validate => :boolean, :default => true, :required => false 
+
+  # Remove timestamp from message (title) if the message starts with a timestamp
+  config :strip_timestamp, :validate => :boolean, :default => false, :required => false 
   
   # If set to true automatically map all logstash defined fields to Sentry extra fields.
   # As an example, the logstash event:
@@ -89,12 +92,20 @@ class LogStash::Outputs::Sentry < LogStash::Outputs::Base
     return unless output?(event)
  
     require 'securerandom'
+
+    #use message from event if exists, if not from static
+    message_to_send = event["#{msg}"] || "#{msg}"
+    if strip_timestamp == true
+        #remove timestamp from message if available
+        message_matched = message_to_send.match(/\d\d\d\d\-\d\d\-\d\d\s[0-9]{1,2}\:\d\d\:\d\d,\d{1,}\s(.*)/) 
+        message_to_send = message_matched ? message_matched[1] : message_to_send
+    end
  
     packet = {
       :event_id => SecureRandom.uuid.gsub('-', ''),
       :timestamp => event['@timestamp'],
-      :message => event["#{msg}"] || "#{msg}"
-   }
+      :message => message_to_send
+    }
 
     packet[:level] = "#{level_tag}" 
     packet[:platform] = 'logstash'
