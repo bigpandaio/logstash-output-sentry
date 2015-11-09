@@ -94,6 +94,21 @@ sentry {
 }
 ```
 
+* You can optionally strip the timestamp from the sentry title by do setting `strip_timestamp` to `true`, which will change `YYYY-MM-DD HH:MM:SS,MILLISEC INFO ..` to `INFO ...`
+```ruby
+sentry {
+   'key' => "87e60914d35a4394a69acc3b6d15d061"
+   'secret' => "596d005d20274474991a2fb8c33040b8"
+   'project_id' => "1"
+   'host' => "http://192.168.56.102:9000"
+   'msg' => "Message you want"
+   'level_tag' => "fatal"
+   'use_ssl' => false
+   'fields_to_tags' => true 
+   'strim_timestamp' => true 
+}
+```
+
 ## Contributing
 
 All contributions are welcome: ideas, patches, documentation, bug reports, complaints, and even something you drew up on a napkin.
